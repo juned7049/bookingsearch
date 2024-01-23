@@ -23,10 +23,14 @@ public class BookingController {
 
 	@GetMapping("/search")
 	public ResponseEntity<List<SearchResultDTO>> searchBookings(@RequestParam(required = false) String customerName,
-			@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+			@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
+			@RequestParam(required = false) String packagename,
+	         @RequestParam(required = false) String servicename)
+	{
 
-		List<SearchResultDTO> searchResults = bookingSearchService.searchBookings(customerName, date);
+		List<SearchResultDTO> searchResults = bookingSearchService.searchBookings(customerName, date, packagename,servicename);
 
 		return ResponseEntity.ok(searchResults);
 	}
+
 }

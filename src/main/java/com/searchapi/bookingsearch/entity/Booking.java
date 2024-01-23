@@ -2,6 +2,7 @@ package com.searchapi.bookingsearch.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -12,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
@@ -26,6 +28,12 @@ public class Booking {
 	@JoinColumn(name = "customerid")
 	private CustomerDetails customer;
 
+	@OneToMany(mappedBy = "booking")
+	private List<BookingPackages> bookingPackages;
+
+	@OneToMany(mappedBy = "booking")
+	private List<BookingServices> bookingservices;
+	
 	@Column(name = "bookingdate")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
@@ -45,11 +53,12 @@ public class Booking {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Booking(Long bookingId, CustomerDetails customer, Date bookingDate, BigDecimal totalAmount,
-			String contactPhone, String contactEmail) {
+	public Booking(Long bookingId, CustomerDetails customer, List<BookingPackages> bookingPackages, Date bookingDate,
+			BigDecimal totalAmount, String contactPhone, String contactEmail) {
 		super();
 		this.bookingId = bookingId;
 		this.customer = customer;
+		this.bookingPackages = bookingPackages;
 		this.bookingDate = bookingDate;
 		this.totalAmount = totalAmount;
 		this.contactPhone = contactPhone;
@@ -70,6 +79,14 @@ public class Booking {
 
 	public void setCustomer(CustomerDetails customer) {
 		this.customer = customer;
+	}
+
+	public List<BookingPackages> getBookingPackages() {
+		return bookingPackages;
+	}
+
+	public void setBookingPackages(List<BookingPackages> bookingPackages) {
+		this.bookingPackages = bookingPackages;
 	}
 
 	public Date getBookingDate() {
@@ -106,9 +123,11 @@ public class Booking {
 
 	@Override
 	public String toString() {
-		return "Booking [bookingId=" + bookingId + ", customer=" + customer + ", bookingDate=" + bookingDate
-				+ ", totalAmount=" + totalAmount + ", contactPhone=" + contactPhone + ", contactEmail=" + contactEmail
-				+ "]";
+		return "Booking [bookingId=" + bookingId + ", customer=" + customer + ", bookingPackages=" + bookingPackages
+				+ ", bookingDate=" + bookingDate + ", totalAmount=" + totalAmount + ", contactPhone=" + contactPhone
+				+ ", contactEmail=" + contactEmail + "]";
 	}
+
+	
 
 }
